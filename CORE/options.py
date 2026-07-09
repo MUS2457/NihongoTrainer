@@ -46,7 +46,7 @@ class KotobaManager() :
 
             print("Word has been added")
 
-    def delete_word(self) :
+    def delete_kotoba(self) :
         print("delete word")
         self.list()
         
@@ -79,7 +79,46 @@ class KotobaManager() :
 
             
 
+    def Update_kotoba(self) :
+        print("==Update word==")
+        self.list()
+
+        while True :
+            choice = input("Enter the number of the word you want to update!").strip()
+
+            if not choice.isdigit() :
+                print("enter a valid number")
+                continue
+
+            index = int(choice) - 1 
+
+            if index < 0 or index >= len (self.db) :
+                print("the number selected doesnt match any result")
+                continue
+
+            selected = self.db[index]
+
+            new_word = input(f"New Kana [{selected['word']}]: ").strip()
+            new_romaji = input(f"New Romaji [{selected['romaji']}]: ").strip()
+            new_meaning = input(f"New Meaning [{selected['meaning']}]: ").strip()
+            new_example = input(f"New Example [{selected.get('example', '')}]: ").strip()
+
+            if new_word :
+                selected["word"] = new_word
             
+            if new_romaji :
+                selected["romaji"] = new_romaji
+
+            if new_meaning :
+                selected["meaning"] = new_meaning
+
+            selected["example"] = new_example
+
+            self.save()
+            print("✔ Word updated successfully.")
+            return
+
+
 
 
 
