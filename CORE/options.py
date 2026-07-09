@@ -117,8 +117,37 @@ class KotobaManager() :
             self.save()
             print("✔ Word updated successfully.")
             return
+    
+    def search_kotoba(self) :
+        print("==Search word==")
 
+        search_term = input("Enter the word you want to search for (word,romaji, meaning or example): ").strip().lower()
+        
+        results = []
 
+        for w in self.db :
+            
+            word = w["word"]
+            romaji = w["romaji"].lower()
+            meaning = w["meaning"].lower()
+            example = w.get("example", "").lower()
+        
+
+            if (search_term in word or
+                search_term in romaji or
+                search_term in meaning or
+                search_term in example) :
+                results.append(w)
+        
+        if not results :
+            print("No matching words found.")
+            return
+        
+        print(f"Found {len(results)} matching words:")
+        for i, w in enumerate(results, start=1) :
+            print(f"{i}. {w['word']} ({w['romaji']}) - {w['meaning']} - Example: {w.get('example', 'no example provided')}")
+            
+        return results
 
 
 
