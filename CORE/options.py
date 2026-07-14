@@ -1,5 +1,6 @@
 from CORE.word_module import Kotoba
 from STORAGE.storage import save_db, load_db
+from datetime import datetime, timedelta
 
 class KotobaManager() :
 
@@ -7,7 +8,7 @@ class KotobaManager() :
         self.db = load_db()
 
     def save(self) :
-        save_db(self.db)  # save data in the memory
+        save_db(self.db)  # (self.db) representthe data in the memory (loaded and modiefied in later on)
 
     def list(self) :
         if not self.db :
@@ -69,7 +70,7 @@ class KotobaManager() :
 
             if confirm == "y" :
 
-                self.db.pop(index)
+                self.db.pop(index)  
                 self.save()
                 print(f"the word '{selected['word']}={selected['romaji']}'")
                 return #removed = self.db.pop(index)  # its a list ,so used pop to remove item based index it was my first version
@@ -148,7 +149,32 @@ class KotobaManager() :
             print(f"{i}. {w['word']} ({w['romaji']}) - {w['meaning']} - Example: {w.get('example', 'no example provided')}")
             
         return results
+    
+    def review_kotoba(self) :
+        print("==Review words==")
+        if not self.db :
+            print("No words available for review.")
+            return
+        
+        today = datetime.now()
 
+        for w in self.db :
+            if w["next_review"] is None :
+                due = True
+            
+            else :
+                next_date = datetime.strptime(w["next_review"], "%Y-%m-%d")
+                due = next_date <= today
+ 
 
+            if due :
+                print(f"Review word: {w['word']} ({w['romaji']}) - {w['meaning']}")
 
+                input("Press Enter to continue to the next word...")
 
+                w["level"] += 1
+                Days = w["level"] * 2
+                w["next_review"] = (today + timedelta(days=Days)).strftime("%Y-%m-%d")
+
+        self.save()
+        print("Words have been reviewed.")
