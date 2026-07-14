@@ -152,29 +152,37 @@ class KotobaManager() :
     
     def review_kotoba(self) :
         print("==Review words==")
-        if not self.db :
-            print("No words available for review.")
+        
+        words = self.get_due_words()
+        remaining = len(words)
+
+        if not words :
+            print("No words are due for review.")
             return
         
-        today = datetime.now()
+        print(f"You have {len(words)} words due for review:")
 
-        for w in self.db :
-            if w["next_review"] is None :
-                due = True
+        for w in words :
+            print(f"Remaining words : {remaining}")
+            remaining -= 1
+
+            print(f"{w['word']} ({w['romaji']}) - {w['meaning']}")
+            if w.get("example") :
+                print(f"Example: {w['example']}")
             
-            else :
-                next_date = datetime.strptime(w["next_review"], "%Y-%m-%d")
-                due = next_date <= today
- 
+            input("Press Enter to continue to the next word...")
 
-            if due :
-                print(f"Review word: {w['word']} ({w['romaji']}) - {w['meaning']}")
+            w["level"] += 1
+            Days = w["level"] * 2
+            w["next_review"] = (datetime.now() + timedelta(days=Days)).strftime("%Y-%m-%d")
 
-                input("Press Enter to continue to the next word...")
-
-                w["level"] += 1
-                Days = w["level"] * 2
-                w["next_review"] = (today + timedelta(days=Days)).strftime("%Y-%m-%d")
 
         self.save()
         print("Words have been reviewed.")
+        return
+    
+    def get_due_words(self) :
+        today = datetime.now()
+        due_words = [w for w in self.db if w["next_review"] is None or datetime.strptime(w["next_review"], "%Y-%m-%d") <= today]
+
+        return due_words
