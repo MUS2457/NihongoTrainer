@@ -173,8 +173,7 @@ class KotobaManager() :
             input("Press Enter to continue to the next word...")
 
             w["level"] += 1
-            Days = w["level"] * 2
-            w["next_review"] = (datetime.now() + timedelta(days=Days)).strftime("%Y-%m-%d")
+            w["next_review"] = self.calculate_next_review(w["level"])
 
 
         self.save()
@@ -186,3 +185,10 @@ class KotobaManager() :
         due_words = [w for w in self.db if w["next_review"] is None or datetime.strptime(w["next_review"], "%Y-%m-%d") <= today]
 
         return due_words
+    
+
+    def calculate_next_review(self, index) :
+        intervals = [0, 1, 2, 4, 7, 14, 30, 60, 120]
+        Days = intervals[index] if index < len(intervals) else intervals[-1] # < means included 
+
+        return (datetime.now() + timedelta(days=Days)).strftime("%Y-%m-%d")
