@@ -172,7 +172,29 @@ class KotobaManager() :
             
             input("Press Enter to continue to the next word...")
 
-            w["level"] += 1
+            familiarity = list(("Completely", "Partially", "Not at all"))
+
+            print("==Familiarity scale==")
+            for i, l in enumerate(familiarity, start = 1) :
+                print(f"{i}. {l}")
+
+            remember = input("Enter a number from (1 to 3) based on familiarity scale").strip()
+
+            if not remember.isdigit() or int(remember) not  in [1,2,3] :
+                print("Invalid choice")
+                continue
+
+            index = int(remember) -1 
+
+            if familiarity[index] == "Completely" :
+                w["level"] += 1
+
+            elif familiarity[index] == "Partially" :
+                w["level"] = max(0, w["level"] - 1)
+
+            else :
+                w["level"] = 0
+            
             w["next_review"] = self.calculate_next_review(w["level"])
 
 
