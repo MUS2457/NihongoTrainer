@@ -187,7 +187,12 @@ class KotobaManager() :
                 for i, l in enumerate(familiarity, start = 1) :
                     print(f"{i}. {l}")
 
-                remember = input("Enter a number from (1 to 3) based on familiarity scale").strip()
+                remember = input("Enter a number from (1 to 3) based on familiarity scale , or 'q' to quit").strip()
+
+                if remember.lower() == "q" :
+                    print("Returning to main menu")
+                    self.save()
+                    return
 
                 if not remember.isdigit() or int(remember) not  in [1,2,3] :
                     print("Invalid choice")
