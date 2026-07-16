@@ -162,6 +162,12 @@ class KotobaManager() :
         
         print(f"You have {len(words)} words due for review:")
 
+        stats = {"Completely": 0,
+                 "Partially": 0,
+                 "Not at all": 0
+        }
+
+
         for w in words :
             print(f"Remaining words : {remaining}")
             remaining -= 1
@@ -173,10 +179,11 @@ class KotobaManager() :
             input("Press Enter to continue to the next word...")
 
             familiarity = list(("Completely", "Partially", "Not at all"))
+        
             
             while True :
                 print("==Familiarity scale==")
-                
+
                 for i, l in enumerate(familiarity, start = 1) :
                     print(f"{i}. {l}")
 
@@ -187,6 +194,8 @@ class KotobaManager() :
                     continue
 
                 index = int(remember) -1 
+
+                stats[familiarity[index]] += 1
 
                 if familiarity[index] == "Completely" :
                     w["level"] += 1
@@ -199,6 +208,22 @@ class KotobaManager() :
             
                 w["next_review"] = self.calculate_next_review(w["level"])
 
+        print(f" Words reviewed : {len(words)}")
+
+        print(f" completed : {stats['Completely']}")
+
+        if int(stats["Completely"]) == len(words) :
+            print("Insane memory, keep going the road for fluency is short !!")
+        
+        print(f" partially : {stats['Partially']}")
+
+        if int(stats["Partially"]) >= (0.5 * len(words)):
+            print(f"Your path to fluency is long ")
+
+        print(f"Not at all : {stats['Not at all']}")
+
+        if int(stats["Not at all"]) >= (0.6 * len(words)) :
+            print(f"fluency is beyond your reach (in your life time) if you didnt lock in")
 
         self.save()
         print("Words have been reviewed.")
