@@ -218,17 +218,17 @@ class KotobaManager() :
         print(f" completed : {stats['Completely']}")
 
         if int(stats["Completely"]) == len(words) :
-            print("Insane memory, keep going the road for fluency is short !!")
+            print("すごい記憶力ですね。流暢さを追求する道を進み続けてください。短いですから！！")
         
         print(f" partially : {stats['Partially']}")
 
         if int(stats["Partially"]) >= (0.5 * len(words)):
-            print(f"Your path to fluency is long ")
+            print(f"流暢になるまでの道のりは長いので、もっと勉強しましょう（怠惰ではありません")
 
         print(f"Not at all : {stats['Not at all']}")
 
         if int(stats["Not at all"]) >= (0.6 * len(words)) :
-            print(f"fluency is beyond your reach (in your life time) if you didnt lock in")
+            print(f"ロックインしないと、流暢さは（人生において）達成できなくなります")
 
         self.save()
         print("Words have been reviewed.")
