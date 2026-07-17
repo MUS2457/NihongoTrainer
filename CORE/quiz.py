@@ -13,25 +13,34 @@ class Quiz :
         count = 0
         duplicate = []
         interval = min(len(self.db), 15)
+        deplicate_counter = 0
 
-        while count <= interval :
+        while count < interval : #< prevent runnig 16 times
 
             w = random.choice(self.db)
-            duplicate.append(w["word"])
             
             print(f"what is the meaning of the following word {w["word"]}")
 
-            ansewer = input("enter your answer").strip()
+            answer = input("Enter your answer").strip()
 
-            if ansewer == w["meaning"] :
+            if answer == w["meaning"] :
                 if w["word"] not in duplicate :
+                    duplicate.append(w["word"])
                     print("your answer is correct")
                     count += 1
+                    
                 else :
-                    pass
+                    deplicate_counter += 1
 
             else :
                 print("your answer is incorrect")
+                print(f"the correct meaning : {w['meaning']}")
+                print(f"Romaji : {w['romaji']}")
+                print(f"Example : {w.get('example', 'use update tool to add example for better understanding !')}")
                 count -= 1
+
+        print(f"{interval} has been reviwed !, number of word shown more than 1 time {deplicate_counter}")
+        return
+
 
 
