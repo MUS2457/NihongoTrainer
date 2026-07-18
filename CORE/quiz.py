@@ -40,11 +40,26 @@ class Quiz :
         for w in duplicates.keys() :
             if duplicates[w] == 1 :
                 del duplicates[w]
-        
+
         only_duplicates = sum(count for count in duplicates.values()) - len(duplicates)
 
         print(f"{showns} has been reviwed in total!, number of word shown more than 1 time {only_duplicates}")
         return
+    
+    def failed_words(self, duplicates) :
+        failedWords = [i for i,f in duplicates.items() if f >= 2]
+        most_failed = next(i for i, f in duplicates.items() if f == max(c for c in duplicates.values())) # next make it a varible instead of generator
+        results = []
+        most = None
 
+        for w in self.db :
+            for n in failedWords :
+                if w["word"] == most_failed :
+                    most = w
+                
+                if w["word"] == n :
+                    results.append(w)
+
+        return most, results
 
 
