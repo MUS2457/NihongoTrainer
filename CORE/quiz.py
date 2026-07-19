@@ -48,18 +48,10 @@ class Quiz :
     
     def failed_words(self, duplicates) :
         failedWords = [i for i,f in duplicates.items() if f >= 2]
-        most_failed = next(i for i, f in duplicates.items() if f == max(c for c in duplicates.values())) # next make it a varible instead of generator
-        results = []
-        most = None
+        max_fail = max(c for c in duplicates.values())
+        most_failed = next((i for i, f in duplicates.items() if f == max_fail ), None) # next make it a varible instead of generator
+        results = [w for w in self.db if w["word"] in failedWords ]
 
-        for w in self.db :
-            for n in failedWords :
-                if w["word"] == most_failed :
-                    most = w
-                
-                if w["word"] == n :
-                    results.append(w)
-
-        return most, results
+        return most_failed, results
 
 
