@@ -9,7 +9,7 @@ class Quiz :
         save_db(self.db)
 
     
-    def guess_meaning(self) :
+    def guessing(self, question, answers) :
         count = 0
         interval = min(len(self.db), 15)
         duplicates = {}
@@ -20,19 +20,19 @@ class Quiz :
             w = random.choice(self.db)
             showns += 1
             
-            print(f"what is the meaning of the following word {w["word"]}")
+            print(f"what is the {answers} of the following  {w[question]}")
 
             answer = input("Enter your answer").strip()
 
-            if answer == w["meaning"] :
-                if w["word"] not in duplicates :
+            if answer == w[answers] :
+                if question not in duplicates :
 
-                    duplicates[w["word"]] = 0
-                duplicates[w["word"]] += 1
+                    duplicates[w[question]] = 0
+                duplicates[w[question]] += 1
                 
             else :
                 print("your answer is incorrect")
-                print(f"the correct meaning : {w['meaning']}")
+                print(f"the correct meaning : {w[answers]}")
                 print(f"Romaji : {w['romaji']}")
                 print(f"Example : {w.get('example', 'use update tool to add example for better understanding !')}")
                 count -= 1
@@ -45,6 +45,12 @@ class Quiz :
 
         print(f"{showns} has been reviwed in total!, number of word shown more than 1 time {only_duplicates}")
         return
+    
+    def guess_meaning(self) :
+        self.guessing(question= "word", answers= "meaning")
+
+    def guess_word(self) :
+        self.guessing(question= "romaji", answers= "word")
     
     def failed_words(self, duplicates) :
         failedWords = [i for i,f in duplicates.items() if f >= 2]
