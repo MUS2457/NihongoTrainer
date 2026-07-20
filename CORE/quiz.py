@@ -42,8 +42,11 @@ class Quiz :
                 del duplicates[w]
 
         only_duplicates = sum(count for count in duplicates.values()) - len(duplicates)
+        most_failed , results = self.failed_words(duplicates)
 
         print(f"{showns} has been reviwed in total!, number of word shown more than 1 time {only_duplicates}")
+        print(f"Most failed words ")
+
         return
     
     def guess_meaning(self) :
@@ -54,10 +57,9 @@ class Quiz :
     
     def failed_words(self, duplicates) :
         failedWords = [i for i,f in duplicates.items() if f >= 2]
-        max_fail = max(c for c in duplicates.values())
-        most_failed = next((i for i, f in duplicates.items() if f == max_fail ), None) # next make it a varible instead of generator
+        max_fail = max(duplicates, key = duplicates.get)
         results = [w for w in self.db if w["word"] in failedWords ]
-
-        return most_failed, results
+        failed = next(w for w in self.db if w["word"] == max_fail)  # next make it a varible instead of generator
+        return failed, results
 
 
