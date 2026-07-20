@@ -42,11 +42,23 @@ class Quiz :
                 del duplicates[w]
 
         only_duplicates = sum(count for count in duplicates.values()) - len(duplicates)
-        most_failed , results = self.failed_words(duplicates)
+        failed , results = self.failed_words(duplicates)
 
         print(f"{showns} has been reviwed in total!, number of word shown more than 1 time {only_duplicates}")
-        print(f"Most failed words ")
 
+        if results :
+            print(f"Most failed {question} :")
+            print(f"word : {failed['word']} ")
+            print(f"romaji : {failed['romaji']}")
+            print(f"example : {failed.get('example', "no example provided")}")
+ 
+            others = [i for i in results if  i != failed ]
+
+            if others:
+                print("\nOther failed words:")
+                for item in others:
+                    print(item)
+            
         return
     
     def guess_meaning(self) :
