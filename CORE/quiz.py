@@ -43,14 +43,13 @@ class Quiz :
 
         only_duplicates = sum(count for count in duplicates.values()) - len(duplicates)
         failed , results = self.failed_words(duplicates)
-
-        print(f"{showns} has been reviwed in total!, number of word shown more than 1 time {only_duplicates}")
+        percentage_fail = (sum(duplicates.values()) / showns) * 100
 
         if results :
             print(f"Most failed {question} :")
             print(f"word : {failed['word']} ")
             print(f"romaji : {failed['romaji']}")
-            print(f"example : {failed.get('example', "no example provided")}")
+            print(f"example : {failed.get('example', 'no example provided')}")
  
             others = [i for i in results if  i != failed ]
 
@@ -58,8 +57,12 @@ class Quiz :
                 print("\nOther failed words:")
                 for item in others:
                     print(item)
-            
-        return
+        
+        print(f"{showns} has been reviwed in total!, number of word shown more than 1 time {only_duplicates}")
+        print(f"fail percentage : {percentage_fail} % ")
+             
+        return 
+        
     
     def guess_meaning(self) :
         self.guessing(question= "word", answers= "meaning")
