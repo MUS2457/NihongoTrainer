@@ -42,61 +42,57 @@ def manage_word() :
                 continue
 
 
-
-    except ValueError :
-        print("invalid input")
-        manage_word()
-
-
 def test_review() :
     if not study.db :
-        print("No words for review or taking a quiz nor for search")
+        print("No words for review or  for taking a quiz nor for search")
         return
     
-    while TRue
+    while True :
     
-    print("1. Review words")
-    print("2. Take quiz")
-    print("3. search a word (s)")
-    print("4. exit")
+        print("1. Review words")
+        print("2. Take quiz")
+        print("3. search a word (s)")
 
-    try :
-        choice = int(input("Enter your choice based on number from the menu"))
+        choice = input("Enter your choice based on number from the menu or 'q'").strip()
 
-        if choice == 1 :
-            manager.review_kotoba()
-
-        elif choice == 2 :
-            print("1. guess by meaning")
-            print("2. guess the kana based on romaji")
-            print("3. exit")
-            
-            try :
-                user = int(input("Enter your choice based on number from the menu"))
-
-                if user == 1 :
-                    study.guess_meaning()
-
-                elif user == 2 :
-                    study.guess_word()
-
-                elif user == 3 :
-                    print("back to main menu")
-                    return
-            
-            except ValueError :
-                print("invalid input")
-                return
-        
-        elif choice == 3 :
-            manager.search_kotoba()
-
-        elif choice == 4 :
+        if choice == "q" :
             print("back to main menu")
             return
+
+        elif not choice.isdigit() or int(choice) not in [1, 2, 3] :
+            print("invalid input")
+            continue
+
+        confirm = int(choice)
+
+        if confirm == 1 :
+            manager.review_kotoba()
+
+        elif confirm == 2 :
+            while True :
+
+                print("1. guess by meaning")
+                print("2. guess the kana based on romaji")
+                print("3. back to the first menu")
+
+                user = input("Enter your choice based on number from the menu or 'q'").strip()
+
+                if not user.isdigit() or int(user) not in [1, 2, 3] :
+                    print("invalid input")
+                    continue
+
+                user2 = int(user)
+
+                if user2 == 1 :
+                    study.guess_meaning()
+
+                elif user2 == 2 :
+                    study.guess_word()
+
+                else :
+                    print("back to menu")
+                    break
         
-    except ValueError :
-        test_review()
-
-
-
+        else :
+            manager.search_kotoba()
+        
