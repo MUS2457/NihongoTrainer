@@ -96,3 +96,25 @@ def test_review() :
         else :
             manager.search_kotoba()
         
+x = "I love learning algorithms because algorithms make me faster"
+
+freq = {}          # final frequency map
+current_word = ""  # manually build words
+
+for char in x:
+
+    if char != " " :
+        current_word += char # assembel the word
+
+    else :
+        freq[current_word] = freq.get(current_word, 0)  + 1
+
+        current_word = ""
+
+
+if current_word != "" :
+    freq[current_word] = freq.get(current_word, 0)  + 1
+
+print(freq)
+    
+
