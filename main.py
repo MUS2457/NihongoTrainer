@@ -1,5 +1,5 @@
 from CORE import quiz, word_manager
-from STORAGE import storage
+import sys
 
 manager = word_manager.KotobaManager()
 study = quiz.Quiz()
@@ -96,25 +96,30 @@ def test_review() :
         else :
             manager.search_kotoba()
         
-x = "I love learning algorithms because algorithms make me faster"
+def program () :
+    while True :
+        print("1. manage kotoba (add, update...ect) ")
+        print("2. study (review, quiz)")
+        print("0. exit")
 
-freq = {}          # final frequency map
-current_word = ""  # manually build words
+        choice = input("Enter a number from the menu").strip()
 
-for char in x:
+        if not choice.isdigit() or int(choice) not in [0, 1, 2] :
+            print("Invalid input")
+            continue
 
-    if char != " " :
-        current_word += char # assembel the word
+        x = int(choice)
 
-    else :
-        freq[current_word] = freq.get(current_word, 0)  + 1
+        if x == 0 :
+            print("goodbye , program will close")
+            sys.exit()
 
-        current_word = ""
+        elif x == 1 :
+            manage_word()
+
+        elif x == 2 :
+            test_review()
 
 
-if current_word != "" :
-    freq[current_word] = freq.get(current_word, 0)  + 1
-
-print(freq)
-    
-
+if __name__ == "__main__" :
+    program()

@@ -23,7 +23,7 @@ class KotobaManager() :
 
         while True :
             word = input("Kana: ").strip()
-            if not word or any(char.isdigit() for char in word) or any(char.isalpha() for char in word) :
+            if not word or any(char.isdigit() for char in word)  or not any(char.isalpha() for char in word) :
                 print("Enter a word with japanese characters only")
                 continue
 
@@ -46,6 +46,7 @@ class KotobaManager() :
             self.save()
 
             print("Word has been added")
+            return
 
     def delete_kotoba(self) :
         print("delete word")
