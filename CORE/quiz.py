@@ -11,9 +11,11 @@ class Quiz :
     
     def guessing(self, question, answers) :
         count = 0
-        interval = min(len(self.db), 15)
+        interval = min(len(self.db), 1)
         duplicates = {}
         showns = 0
+        failes = 0
+        failures = []
 
         while count < interval : #< prevent runnig 16 times start at 0
 
@@ -22,28 +24,41 @@ class Quiz :
             
             print(f"what is the {answers} of the following  {w[question]}")
 
-            answer = input("Enter your answer").strip()
+            answer = input("Enter your answer : ").strip()
 
             if answer == w[answers] :
-                if question not in duplicates :
 
-                    duplicates[w[question]] = 0
-                duplicates[w[question]] += 1
+                if question not in duplicates :
+                    duplicates[w[question]] = 1
+
+                else :
+                    duplicates[w[question]] += 1
+                    count -= 1
+                
+                count += 1
                 
             else :
                 print("your answer is incorrect")
                 print(f"the correct meaning : {w[answers]}")
                 print(f"Romaji : {w['romaji']}")
                 print(f"Example : {w.get('example', 'use update tool to add example for better understanding !')}")
+
                 count -= 1
+                failes += 1
+
+                failures.append(w[question])
+
+
+
+        real_duplicates = []
 
         for w in duplicates.keys() :
-            if duplicates[w] == 1 :
-                del duplicates[w]
+            if duplicates[w] != 1 :
+                real_duplicates.append(w)
 
-        only_duplicates = sum(count for count in duplicates.values()) - len(duplicates)
-        failed , results = self.failed_words(duplicates)
-        percentage_fail = (sum(duplicates.values()) / showns) * 100
+        only_duplicates = sum(duplicates[count] for count in real_duplicates) - len(real_duplicates)
+        failed , results = self.failed_words(failures, question)
+        percentage_fail = (failes / showns) * 100
 
         if results :
             print(f"Most failed {question} :")
@@ -70,11 +85,15 @@ class Quiz :
     def guess_word(self) :
         self.guessing(question= "romaji", answers= "word")
     
-    def failed_words(self, duplicates) :
-        failedWords = [i for i,f in duplicates.items() if f >= 2]
-        max_fail = max(duplicates, key = duplicates.get)
-        results = [w for w in self.db if w["word"] in failedWords ]
-        failed = next(w for w in self.db if w["word"] == max_fail)  # next make it a varible instead of generator
+    def failed_words(self, failures, question) :
+        counter = {}
+        for w in failures :
+            counter[w] = counter.get(w, 0) + 1
+
+        max_failed = max(counter , key = counter.get)
+        results = [w for w in self.db if w[question] in failures]
+
+        failed = next(w for w in self.db if w["word"] == max_failed)  # next make it a varible instead of generator
         return failed, results
 
 
