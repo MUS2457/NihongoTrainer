@@ -111,7 +111,7 @@ def program () :
         x = int(choice)
 
         if x == 0 :
-            print("goodbye , program will close")
+            print("Goodbye , program will close")
             sys.exit()
 
         elif x == 1 :
@@ -120,6 +120,7 @@ def program () :
         elif x == 2 :
             test_review()
 
+#feat main menu: implemented full program loop with input validation and routing
 
 if __name__ == "__main__" :
     program()
