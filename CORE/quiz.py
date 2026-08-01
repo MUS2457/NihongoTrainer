@@ -11,7 +11,7 @@ class Quiz :
     
     def guessing(self, question, answers) :
         count = 0
-        interval = min(len(self.db), 1)
+        interval = min(len(self.db), 15)
         duplicates = {}
         showns = 0
         failes = 0
@@ -22,22 +22,27 @@ class Quiz :
             w = random.choice(self.db)
             showns += 1
             
-            print(f"what is the {answers} of the following  {w[question]}")
+            print(f"what is the {answers} of the following {w[question]} :")
 
             answer = input("Enter your answer : ").strip()
 
             if answer == w[answers] :
 
-                if question not in duplicates :
-                    duplicates[w[question]] = 1
+                if w[question] not in duplicates :
 
+                    duplicates[w[question]] = 0
                 else :
+
                     duplicates[w[question]] += 1
-                    count -= 1
+
+                    if len(self.db) >= 10 :
+                        count -=1
+                
                 
                 count += 1
                 
             else :
+                duplicates[w[question]] = duplicates.get(w[question], 0) +1
                 print("your answer is incorrect")
                 print(f"the correct meaning : {w[answers]}")
                 print(f"Romaji : {w['romaji']}")
@@ -54,9 +59,9 @@ class Quiz :
             if duplicates[w] != 1 :
                 real_duplicates.append(w)
 
-        only_duplicates = sum(duplicates[count] for count in real_duplicates) - len(real_duplicates)
+        only_duplicates = sum(duplicates[k] for k in real_duplicates) - len(real_duplicates)
         
-        print(f"{showns} has been reviwed in total!, number of word shown more than 1 time {only_duplicates}")
+        print(f"{showns} has been reviwed in total!1, number of word shown more than 1 time {abs(only_duplicates)}")
 
         if failures :
                     failed , results = self.failed_words(failures, question)
