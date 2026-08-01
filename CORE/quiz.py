@@ -45,9 +45,7 @@ class Quiz :
 
                 count -= 1
                 failes += 1
-
                 failures.append(w[question])
-
 
 
         real_duplicates = []
@@ -57,25 +55,32 @@ class Quiz :
                 real_duplicates.append(w)
 
         only_duplicates = sum(duplicates[count] for count in real_duplicates) - len(real_duplicates)
-        failed , results = self.failed_words(failures, question)
-        percentage_fail = (failes / showns) * 100
-
-        if results :
-            print(f"Most failed {question} :")
-            print(f"word : {failed['word']} ")
-            print(f"romaji : {failed['romaji']}")
-            print(f"example : {failed.get('example', 'no example provided')}")
- 
-            others = [i for i in results if  i != failed ]
-
-            if others:
-                print("\nOther failed words:")
-                for item in others:
-                    print(item)
         
         print(f"{showns} has been reviwed in total!, number of word shown more than 1 time {only_duplicates}")
-        print(f"fail percentage : {percentage_fail} % ")
-             
+
+        if failures :
+                    failed , results = self.failed_words(failures, question)
+                    percentage_fail = (failes / showns) * 100
+
+                    print("== max failed word ==")
+                    print(f"word : {failed["word"]}")
+                    print(f"Romaji : {failed["romaji"]}")
+                    print(f"Meaning : {failed["meaning"]}")
+                    print(f"Example : {failed.get("example", "No example provided")}")
+         
+                    others = [i for i in results if i != failed]
+         
+                    if others:
+                        print("\nOther failed words:")
+                        for item in others:
+                            
+                            print(f"word : {item["word"]}")
+                            print(f"Romaji : {item["romaji"]}")
+                            print(f"Meaning : {item["meaning"]}")
+                            print(f"Example : {item.get("example", "No example provided")}")
+                            print("=" * 40)                
+
+                    print(f"fail percentage : {percentage_fail} % ")
         return 
         
     
