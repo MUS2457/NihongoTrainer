@@ -1,5 +1,6 @@
 import random
 from STORAGE.storage import load_db, save_db
+from collections import defaultdict
 
 class Quiz :
     def __init__(self) :
@@ -12,10 +13,11 @@ class Quiz :
     def guessing(self, question, answers) :
         count = 0
         interval = min(len(self.db), 15)
-        duplicates = {}
+        duplicates = defaultdict(int)
         showns = 0
         failes = 0
         failures = []
+        seen = set()
 
         while count < interval : #< prevent runnig 16 times start at 0
 
@@ -28,20 +30,17 @@ class Quiz :
 
             if answer == w[answers] :
 
-                if w[question] not in duplicates :
-                    duplicates[w[question]] = 0
+                if w[question] in seen :
+                    duplicates[w[question]] += 1
+                    if len(self.db) >=  10 :
+                        count -= 1
 
                 else :
-                    duplicates[w[question]] += 1
-
-                    if len(self.db) >= 10 :
-                        count -=1
-                
-                
-                count += 1
+                    seen.add(w[question])
+                    count += 1
                 
             else :
-                duplicates[w[question]] = duplicates.get(w[question], 0) + 1
+                duplicates[w[question]] += 1
                 example = (w.get('example', '')).strip()
                 print("your answer is incorrect")
                 
@@ -99,9 +98,9 @@ class Quiz :
         self.guessing(question= "romaji", answers= "word")
     
     def failed_words(self, failures, question) :
-        counter = {}
+        counter = defaultdict(int)
         for w in failures :
-            counter[w] = counter.get(w, 0) + 1
+            counter[w] += 1
 
         max_failed = max(counter , key = counter.get)
         results = [w for w in self.db if w[question] in failures]
