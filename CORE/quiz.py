@@ -29,10 +29,9 @@ class Quiz :
             if answer == w[answers] :
 
                 if w[question] not in duplicates :
-
                     duplicates[w[question]] = 0
-                else :
 
+                else :
                     duplicates[w[question]] += 1
 
                     if len(self.db) >= 10 :
@@ -42,11 +41,14 @@ class Quiz :
                 count += 1
                 
             else :
-                duplicates[w[question]] = duplicates.get(w[question], 0) +1
+                duplicates[w[question]] = duplicates.get(w[question], 0) + 1
+                example = (w.get('example', '')).strip()
                 print("your answer is incorrect")
-                print(f"the correct meaning : {w[answers]}")
+                
+                print(f" word : {w['word']}")
                 print(f"Romaji : {w['romaji']}")
-                print(f"Example : {w.get('example', 'use update tool to add example for better understanding !')}")
+                print(f"Meaning ; {w['meaning']}")
+                print(f"Example : {example or 'No Example provided'}")
 
                 count -= 1
                 failes += 1
@@ -66,12 +68,13 @@ class Quiz :
         if failures :
                     failed , results = self.failed_words(failures, question)
                     percentage_fail = (failes / showns) * 100
+                    example_1 = failed.get("example", "").strip()
 
                     print("== max failed word ==")
-                    print(f"word : {failed["word"]}")
-                    print(f"Romaji : {failed["romaji"]}")
-                    print(f"Meaning : {failed["meaning"]}")
-                    print(f"Example : {failed.get("example", "No example provided")}")
+                    print(f"word : {failed['word']}")
+                    print(f"Romaji : {failed['romaji']}")
+                    print(f"Meaning : {failed['meaning']}")
+                    print(f"Example : {example_1 or 'No Example provided' }")
          
                     others = [i for i in results if i != failed]
          
