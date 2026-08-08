@@ -214,6 +214,9 @@ class KotobaManager() :
             
                 w["next_review"] = self.calculate_next_review(w["level"])
 
+                break
+
+        
         print(f" Words reviewed : {len(words)}")
 
         print(f" completed : {stats['Completely']}")
@@ -231,8 +234,8 @@ class KotobaManager() :
         if int(stats["Not at all"]) >= (0.6 * len(words)) :
             print(f"ロックインしないと、流暢さは（人生において）達成できなくなります")
 
-        self.save()
         print("Words have been reviewed.")
+        self.save()
         return
     
     def get_due_words(self) :

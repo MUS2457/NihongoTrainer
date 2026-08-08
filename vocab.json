@@ -4,24 +4,24 @@
         "romaji": "taberu",
         "meaning": "to eat",
         "example": "パンをたべる。",
-        "level": 0,
-        "next_review": null
+        "level": 1,
+        "next_review": "2026-08-09"
     },
     {
         "word": "のむ",
         "romaji": "nomu",
         "meaning": "to drink",
         "example": "みずをのむ。",
-        "level": 0,
-        "next_review": null
+        "level": 1,
+        "next_review": "2026-08-09"
     },
     {
         "word": "みる",
         "romaji": "miru",
         "meaning": "to see",
         "example": "",
-        "level": 0,
-        "next_review": null
+        "level": 1,
+        "next_review": "2026-08-09"
     },
     {
         "word": "きく",
@@ -29,14 +29,14 @@
         "meaning": "to listen",
         "example": "おんがくをきく。",
         "level": 0,
-        "next_review": null
+        "next_review": "2026-08-08"
     },
     {
         "word": "いく",
         "romaji": "iku",
         "meaning": "to go",
         "example": "がっこうへいく。",
-        "level": 0,
-        "next_review": null
+        "level": 1,
+        "next_review": "2026-08-09"
     }
 ]
