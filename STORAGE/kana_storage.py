@@ -1,7 +1,8 @@
 import csv
+import os 
 
 
-file_name = "kana.csv"
+file_path = "DB/kana.csv"
 
 kana_list = [
     # --- Hiragana ---
@@ -115,7 +116,9 @@ kana_list = [
 
 def save_kana() :
 
-    with open(file_name, "w", encoding = "utf-8", newline= "") as kana :
+    os.makedirs("DB", exist_ok= True )
+    
+    with open(file_path, "w", encoding = "utf-8", newline= "") as kana :
         writer = csv.writer(kana)
         writer.writerow(["kana", "romaji", "type"])
         writer.writerows(kana_list)

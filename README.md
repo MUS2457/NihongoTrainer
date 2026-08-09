@@ -43,7 +43,7 @@ NIHONGOTRAINER/
 
 ## Goals
 
-- Support Japanese language learning for school starting July 2026
+- Support Japanese language learning for school starting 
 - Demonstrate backend engineering mastery through modular design
 - Expand into a full-featured language trainer with quizzes and analytics
 
