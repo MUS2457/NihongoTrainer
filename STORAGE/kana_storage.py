@@ -1,33 +1,6 @@
 import csv
-import os 
+import os
 
-file_path = "DB/kana.csv"
-
-def save_kana() :
-
-    os.makedirs("DB", exist_ok= True )
-    
-    with open(file_path, "w", encoding = "utf-8", newline= "") as kana :
-        writer = csv.writer(kana)
-        writer.writerow(["kana", "romaji", "type"])
-        writer.writerows(kana_list)
-
-
-def load_kana() :
-
-    if not os.path.exists(file_path) :
-        save_kana()
-
-    try :
-        with open(file_path, "r") as kana :
-            reader = csv.DictReader(kana)
-            return list(reader)  #list of dic
-
-    except Exception as e :
-        print("Error loading kana", e)
-        return []
-
-    
 kana_list = [
     # --- Hiragana ---
     ("あ","a","hiragana"), ("い","i","hiragana"), ("う","u","hiragana"),
@@ -138,4 +111,38 @@ kana_list = [
     ("ッ","tsu","katakana-small")
 ]
 
+ROOT = os.path.dirname(os.path.dirname(__file__))  # go up from STORAGE , __file__ represent current position
+DB_DIR = os.path.join(ROOT, "DB")  # dirname == back one step path name ex :ftp/db/csv after become ftp/db
+file_path = os.path.join(DB_DIR, "kana.csv")
 
+
+def save_kana() :
+
+    os.makedirs(DB_DIR, exist_ok=True)  
+
+    with open(file_path, "w", encoding = "utf-8", newline= "") as kana :
+        writer = csv.writer(kana)
+        writer.writerow(["kana", "romaji", "type"])
+        writer.writerows(kana_list)
+
+
+def load_kana() :
+
+    if not os.path.isfile(file_path) :
+        save_kana()
+
+    try :
+        with open(file_path, "r") as kana :
+            reader = csv.DictReader(kana)
+            return list(reader)  #list of dic
+
+    except Exception as e :
+        print("Error loading kana", e)
+        return []
+
+    
+
+
+
+if __name__ == "__main__" :
+    save_kana()

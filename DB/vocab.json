@@ -20,8 +20,8 @@
         "romaji": "miru",
         "meaning": "to see",
         "example": "",
-        "level": 0,
-        "next_review": "2026-08-09"
+        "level": 1,
+        "next_review": "2026-08-10"
     },
     {
         "word": "きく",
@@ -36,7 +36,7 @@
         "romaji": "iku",
         "meaning": "to go",
         "example": "がっこうへいく。",
-        "level": 0,
-        "next_review": "2026-08-09"
+        "level": 1,
+        "next_review": "2026-08-10"
     }
 ]

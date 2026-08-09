@@ -1,8 +1,8 @@
-from CORE import quiz, word_manager
+from CORE import word_manager, word_quiz
 import sys
 
 manager = word_manager.KotobaManager()
-study = quiz.Quiz()
+study = word_quiz.Quiz()
 
 def manage_word() :
     while True :
