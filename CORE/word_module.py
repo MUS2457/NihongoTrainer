@@ -16,3 +16,5 @@ class Kotoba:
             "level": self.level,
             "next_review": self.next_review
         }
+
+

@@ -1,5 +1,6 @@
 from CORE import word_manager, word_quiz
 import sys
+from STORAGE import kana_storage
 
 manager = word_manager.KotobaManager()
 study = word_quiz.Quiz()
