@@ -1,5 +1,6 @@
-from CORE import word_manager, word_quiz
+from QUIZ import word_manager
 import sys
+from QUIZ import word_quiz
 from STORAGE import kana_storage
 
 manager = word_manager.KotobaManager()
@@ -122,6 +123,7 @@ def program () :
             test_review()
 
 #feat main menu: implemented full program loop with input validation and routing
-
+from QUIZ import kana_quiz
 if __name__ == "__main__" :
-    program()
+    hira = kana_quiz.KanaManager()
+    hira.quizzer_hira()
