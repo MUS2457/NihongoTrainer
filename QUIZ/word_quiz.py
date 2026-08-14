@@ -1,10 +1,12 @@
 import random
 from STORAGE.storage import load_db, save_db
 from collections import defaultdict
+from CORE import word_module
 
 class Quiz :
     def __init__(self) :
-        self.db = load_db()
+        data = load_db()
+        self.db = 
     
     def save(self) :
         save_db(self.db)
