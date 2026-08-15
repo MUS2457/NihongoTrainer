@@ -3,111 +3,64 @@ from STORAGE.storage import load_db, save_db
 from collections import defaultdict
 from CORE import word_module
 
-class Quiz :
+class KotobaQuizzer :
     def __init__(self) :
         data = load_db()
-        self.db = 
+        self.db = [word_module.Kotoba.from_dict(i) for i in data]
     
     def save(self) :
         save_db(self.db)
 
     
-    def guessing(self, question, answers) :
-        count = 0
+    def guessing(self) :
         interval = min(len(self.db), 15)
-        duplicates = defaultdict(int)
-        showns = 0
-        failes = 0
-        failures = []
         seen = set()
+        score = 0
+        fails = 0
+        duplicates = defaultdict(int)
+        shown = 0
+        failed_counter = defaultdict(int)
 
-        while count < interval : #< prevent runnig 16 times start at 0
-
+        while score < 3 :
             w = random.choice(self.db)
-            showns += 1
-            
-            print(f"what is the {answers} of the following {w[question]} :")
+            shown += 1
 
-            answer = input("Enter your answer : ").strip()
+            user = input(f"Enter the 'Romaji' corresponding to this {w.word} ").strip()
 
-            if answer == w[answers] :
-
-                if w[question] in seen :
-                    duplicates[w[question]] += 1
-                    if len(self.db) >=  10 :
-                        count -= 1
+            if user.lower() == w.romaji :
+                if w.word in seen :
+                    duplicates[w.word] += 1
 
                 else :
-                    seen.add(w[question])
-                    count += 1
-                
+                    seen.add(w.word)
+                    score += 1
+
             else :
-                duplicates[w[question]] += 1
-                example = (w.get('example', '')).strip()
-                print("your answer is incorrect")
-                
-                print(f" word : {w['word']}")
-                print(f"Romaji : {w['romaji']}")
-                print(f"Meaning ; {w['meaning']}")
-                print(f"Example : {example or 'No Example provided'}")
+                duplicates[w.word] += 1
+                failed_counter[w.word] += 1
 
-                count -= 1
-                failes += 1
-                failures.append(w[question])
+                fails += 1
+
+                print("Your answer is incorrect")
+                print(f"word : {w.word}")
+                print(f"romaji : {w.romaji}")
+                print(f"Meaning : {w.meaning}")
+                print(f"Example : {w.example or 'No example provided'}")
+
+        if failed_counter :
+            max_failde , results = self.failed_word_filter(duplicates)
+            print(max_failde)
+            for i in results :
+                 print(i)
 
 
-        real_duplicates = []
 
-        for w in duplicates.keys() :
-            if duplicates[w] != 1 :
-                real_duplicates.append(w)
-
-        only_duplicates = sum(duplicates[k] for k in real_duplicates) - len(real_duplicates)
+    def failed_word_filter(self, dict) :
+            failed_word = max(dict, key = dict.get)
+            max_failed = next(d for d in self.db if d.word == failed_word)
+            results = [w for w in self.db if w.word in dict]
+            return max_failed, results
         
-        print(f"{showns} has been reviwed in total!1, number of word shown more than 1 time {abs(only_duplicates)}")
-
-        if failures :
-                    failed , results = self.failed_words(failures, question)
-                    percentage_fail = (failes / showns) * 100
-                    example_1 = failed.get("example", "").strip()
-
-                    print("== max failed word ==")
-                    print(f"word : {failed['word']}")
-                    print(f"Romaji : {failed['romaji']}")
-                    print(f"Meaning : {failed['meaning']}")
-                    print(f"Example : {example_1 or 'No Example provided' }")
-         
-                    others = [i for i in results if i != failed]
-         
-                    if others:
-                        print("\nOther failed words:")
-                        for item in others:
-                            
-                            print(f"word : {item["word"]}")
-                            print(f"Romaji : {item["romaji"]}")
-                            print(f"Meaning : {item["meaning"]}")
-                            print(f"Example : {item.get("example", "No example provided")}")
-                            print("=" * 40)                
-
-                    print(f"fail percentage : {percentage_fail} % ")
-        return 
         
-    
-    def guess_meaning(self) :
-        self.guessing(question= "word", answers= "meaning")
-
-    def guess_word(self) :
-        self.guessing(question= "romaji", answers= "word")
-    
-    def failed_words(self, failures, question) :
-        counter = defaultdict(int)
-        for w in failures :
-            counter[w] += 1
-
-        max_failed = max(counter , key = counter.get)
-        results = [w for w in self.db if w[question] in failures]
-
-        failed = next(w for w in self.db if w["word"] == max_failed)  # next make it a varible instead of generator
-        return failed, results
-
-
+          
+        

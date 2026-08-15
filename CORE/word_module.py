@@ -28,4 +28,13 @@ class Kotoba:
             next_review = dict["next_review"]
         )
 
-
+    def __str__(self):
+        example = self.example or "No example provided"
+        return (
+        f"Word       : {self.word}\n"
+        f"Romaji     : {self.romaji}\n"
+        f"Meaning    : {self.meaning}\n"
+        f"Example    : {example}\n"
+        f"Level      : {self.level}\n"
+        f"NextReview : {self.next_review}"
+    )

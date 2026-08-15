@@ -4,7 +4,7 @@ from QUIZ import word_quiz
 from STORAGE import kana_storage
 
 manager = word_manager.KotobaManager()
-study = word_quiz.Quiz()
+#study = word_quiz.Quiz()
 
 def manage_word() :
     while True :
@@ -125,5 +125,6 @@ def program () :
 #feat main menu: implemented full program loop with input validation and routing
 from QUIZ import kana_quiz
 if __name__ == "__main__" :
-    hira = kana_quiz.KanaManager()
-    hira.quizzer_hira()
+       w = word_quiz.KotobaQuizzer()
+       w.guessing()
+       
