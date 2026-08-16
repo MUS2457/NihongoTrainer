@@ -21,7 +21,7 @@ class KotobaQuizzer :
         shown = 0
         failed_counter = defaultdict(int)
 
-        while score < 3 :
+        while score < interval :
             w = random.choice(self.db)
             shown += 1
 
@@ -47,11 +47,48 @@ class KotobaQuizzer :
                 print(f"Meaning : {w.meaning}")
                 print(f"Example : {w.example or 'No example provided'}")
 
+        tl_duplicates , most_shown = self.duplicate_manager(duplicates)
+        
+        unique_attempts = shown - tl_duplicates
+
+        if unique_attempts > 0:
+            fail_rate = (fails / unique_attempts) * 100
+        else:
+            fail_rate = (fails / shown) * 100
+
+
+        succes_rate = 100 - fail_rate 
+        
+        print(f"Succes rate : {succes_rate: .2f}")
+        
         if failed_counter :
-            max_failde , results = self.failed_word_filter(duplicates)
-            print(max_failde)
-            for i in results :
-                 print(i)
+            failed_max, results = self.failed_word_filter(failed_counter)
+            
+            print(f"Your fails rate : {fail_rate: .2f}\n\n")
+            print("Your most failed word\n")
+            print(f"Word : {failed_max.word}")
+            print(f"romaji : {failed_max.romaji}")
+            print(f"Meaning : {failed_max.meaning}")
+            print(f"Example : {failed_max.example or 'No example provided'}")
+
+            others = [w for w in results if w != failed_max]
+
+            if others :
+                print("Other failed words")
+                for d in others :
+                    print()
+                    print(f"Word : {d.word}")
+                    print(f"romaji : {d.romaji}")
+                    print(f"Meaning : {d.meaning}")
+                    print(f"Example : {d.example or 'No example provided'}")
+
+        if duplicates :
+            print("\n\n")
+            print(f"Most shown word : {most_shown.word}")
+            print(f"romaji : {most_shown.romaji}")
+            print(f"Meaning : {most_shown.meaning}")
+            print(f"Example : {most_shown.example or 'No example provided'}")
+        
 
 
 
@@ -60,7 +97,14 @@ class KotobaQuizzer :
             max_failed = next(d for d in self.db if d.word == failed_word)
             results = [w for w in self.db if w.word in dict]
             return max_failed, results
-        
+
+
+    def duplicate_manager(self, duplicates) :
+        real_duplicates = [i for i,f in duplicates.items() if f > 1]
+        tl_duplicates = sum(duplicates[i] for i in real_duplicates) - len(real_duplicates)
+        most_shown = next(w for w in self.db if w.word == max(duplicates, key = duplicates.get))
+
+        return tl_duplicates, most_shown
         
           
         

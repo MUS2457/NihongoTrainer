@@ -15,14 +15,14 @@ class KanaManager() :
 
     def quizzer (self, quetion) :
         score = 0
-        showed = 0
+        shown = 0
         failed = 0
         duplicates = collections.defaultdict(int)
         seen = set()
 
         while score < 20 :
             char = random.choice(getattr(self,quetion))
-            showed += 1
+            shown += 1
 
             user = input(f"Enter the 'Romaji' corresponding to this {char.kana} ").strip()
 
@@ -46,18 +46,20 @@ class KanaManager() :
 
         tl_duplicates = sum(duplicates[i] for i in real_duplicates) - len(real_duplicates)
 
-        fail_rate = (failed / (showed - tl_duplicates)) * 100
+        unique_attempts = shown - tl_duplicates
+
+        if unique_attempts > 0:
+            fail_rate = (failed / unique_attempts) * 100
+        else:
+            fail_rate = (failed / shown) * 100
+
         succes_rate = 100 - fail_rate
 
         if tl_duplicates :
             print(f"Number of repeated kana : {tl_duplicates}")
 
         print(f"Success rate {succes_rate: .2f}")
-        if fail_rate :
-            print(f"Fail rate {fail_rate: .2f}")
-
-        else :
-            print(f"Perfect score you are a best ,Keep going")
+        print(f"Fail rate {fail_rate: .2f}")
 
         return
 
