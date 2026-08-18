@@ -126,5 +126,5 @@ def program () :
 from QUIZ import kana_quiz
 if __name__ == "__main__" :
        w = word_quiz.KotobaQuizzer()
-       w.guessing()
+       w.quizzer_kana()
        

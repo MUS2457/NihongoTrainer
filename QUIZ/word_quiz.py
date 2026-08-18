@@ -1,7 +1,7 @@
 import random
 from STORAGE.storage import load_db, save_db
 from collections import defaultdict
-from CORE import word_module
+from CORE import word_module, color_module
 
 class KotobaQuizzer :
     def __init__(self) :
@@ -12,7 +12,7 @@ class KotobaQuizzer :
         save_db(self.db)
 
     
-    def guessing(self) :
+    def guessing(self, asked, responced) :
         interval = min(len(self.db), 15)
         seen = set()
         score = 0
@@ -20,18 +20,23 @@ class KotobaQuizzer :
         duplicates = defaultdict(int)
         shown = 0
         failed_counter = defaultdict(int)
+        color = color_module.Color()
+
 
         while score < interval :
             w = random.choice(self.db)
             shown += 1
 
-            user = input(f"Enter the 'Romaji' corresponding to this {w.word} ").strip()
+            user = input(f"Enter the {responced.capitalize()} corresponding to this {getattr(w,asked)} ").strip()
 
-            if user.lower() == w.romaji :
+            if user.lower() == getattr(w,responced) :
                 if w.word in seen :
+                    print(color.GREEN + "Correct, Already counted!" + color.RESET)
+
                     duplicates[w.word] += 1
 
                 else :
+                    print(color.GREEN + "Correct!" + color.RESET)
                     seen.add(w.word)
                     score += 1
 
@@ -41,20 +46,24 @@ class KotobaQuizzer :
 
                 fails += 1
 
-                print("Your answer is incorrect")
+                print(color.RED + "Your answer is incorrect" + color.RESET)
                 print(f"word : {w.word}")
                 print(f"romaji : {w.romaji}")
                 print(f"Meaning : {w.meaning}")
                 print(f"Example : {w.example or 'No example provided'}")
 
-        tl_duplicates , most_shown = self.duplicate_manager(duplicates)
-        
-        unique_attempts = shown - tl_duplicates
+        unique_attempts = False
 
-        if unique_attempts > 0:
-            fail_rate = (fails / unique_attempts) * 100
-        else:
+        if duplicates :
+            tl_duplicates , most_shown = self.duplicate_manager(duplicates)
+            unique_attempts = shown - tl_duplicates
+
+        
+        if unique_attempts is False :
             fail_rate = (fails / shown) * 100
+
+        else :
+            fail_rate = (fails / unique_attempts) * 100 
 
 
         succes_rate = 100 - fail_rate 
@@ -105,6 +114,12 @@ class KotobaQuizzer :
         most_shown = next(w for w in self.db if w.word == max(duplicates, key = duplicates.get))
 
         return tl_duplicates, most_shown
+
+    def quizzer_romanji(self) :
+        self.guessing("word", "romaji")
+
+    def quizzer_kana(self) :
+        self.guessing("romaji", "word")
         
           
         
