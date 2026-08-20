@@ -38,5 +38,13 @@
         "example": "がっこうへいく。",
         "level": 1,
         "next_review": "2026-08-10"
+    },
+    {
+        "word": "せんたく",
+        "romaji": "sentaku",
+        "meaning": "laundry",
+        "example": "ふくをせんたくする",
+        "level": 1,
+        "next_review": null
     }
 ]

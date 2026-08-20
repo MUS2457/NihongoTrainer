@@ -1,7 +1,8 @@
 from STORAGE import kana_storage
-from CORE import kana_module
+from CORE import kana_module, color_module
 import random
 import collections
+
 
 class KanaManager() :
 
@@ -19,6 +20,7 @@ class KanaManager() :
         failed = 0
         duplicates = collections.defaultdict(int)
         seen = set()
+        color = color_module.Color()
 
         while score < 20 :
             char = random.choice(getattr(self,quetion))
@@ -28,17 +30,20 @@ class KanaManager() :
 
             if user.lower() == char.romaji :
 
-                if char.kana is seen :
-                    duplicates[char.kana]
+                if char.kana in seen :
+                    print(color.GREEN + "Correct, Already counted!" + color.RESET)
+                    duplicates[char.kana] += 1
 
                 else :
+                    print(color.GREEN + "Correct !" + color.RESET)
                     seen.add(char.kana)
                     score += 1
             else :
+                
                 duplicates[char.kana] += 1
                 failed += 1
 
-                print("Your answer is incorrect !")
+                print(color.RED + "Your answer is incorrect" + color.RESET)
                 print(f"The {quetion} : {char.kana}")
                 print(f"Romaji : {char.romaji}")
 
@@ -69,6 +74,8 @@ class KanaManager() :
 
     def quizzer_kata(self) :
             self.quizzer("katakana")
+
+    
         
 
 

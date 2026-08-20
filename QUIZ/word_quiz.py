@@ -73,7 +73,7 @@ class KotobaQuizzer :
         if failed_counter :
             failed_max, results = self.failed_word_filter(failed_counter)
             
-            print(f"Your fails rate : {fail_rate: .2f}\n\n")
+            print(f"Your fails rate : {fail_rate: .2f}")
             print("Your most failed word\n")
             print(f"Word : {failed_max.word}")
             print(f"romaji : {failed_max.romaji}")
@@ -92,7 +92,7 @@ class KotobaQuizzer :
                     print(f"Example : {d.example or 'No example provided'}")
 
         if duplicates :
-            print("\n\n")
+            print()
             print(f"Most shown word : {most_shown.word}")
             print(f"romaji : {most_shown.romaji}")
             print(f"Meaning : {most_shown.meaning}")
@@ -120,6 +120,9 @@ class KotobaQuizzer :
 
     def quizzer_kana(self) :
         self.guessing("romaji", "word")
+
+    def quizzer_meaning(self) :
+        self.guessing("word", "meaning")
         
           
         

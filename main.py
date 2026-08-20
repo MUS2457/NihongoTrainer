@@ -1,10 +1,11 @@
-from QUIZ import word_manager
+from QUIZ import word_manager, word_quiz, kana_quiz
 import sys
-from QUIZ import word_quiz
+
 from STORAGE import kana_storage
 
 manager = word_manager.KotobaManager()
-#study = word_quiz.Quiz()
+study = word_quiz.KotobaQuizzer()
+kana = kana_quiz.KanaManager()
 
 def manage_word() :
     while True :
@@ -44,6 +45,7 @@ def manage_word() :
                 continue
 
 
+
 def test_review() :
     if not study.db :
         print("No words for review or  for taking a quiz nor for search")
@@ -75,25 +77,37 @@ def test_review() :
 
                 print("1. guess by meaning")
                 print("2. guess the kana based on romaji")
-                print("3. back to the first menu")
+                print("3. guess the romaji based on kana")
+                print("4. take quiz in hiragana")
+                print("5. take quiz in katakana")
+                print("0. back to the first menu")
 
-                user = input("Enter your choice based on number from the menu or 'q'").strip()
+                user = input("Enter your choice based on number from the menu : ").strip()
 
-                if not user.isdigit() or int(user) not in [1, 2, 3] :
+                if not user.isdigit() or int(user) not in [0, 1, 2, 3, 4,5] :
                     print("invalid input")
                     continue
 
                 user2 = int(user)
 
                 if user2 == 1 :
-                    study.guess_meaning()
+                    study.quizzer_meaning()
 
                 elif user2 == 2 :
-                    study.guess_word()
+                    study.quizzer_romanji()
 
-                else :
+                elif user2 == 3 :
+                    study.quizzer_kana()
+
+                elif user2 == 0 :
                     print("back to menu")
                     break
+
+                elif user2 == 4 :
+                    kana.quizzer_hira()
+
+                else :
+                    kana.quizzer_kata()
         
         else :
             manager.search_kotoba()
@@ -122,9 +136,8 @@ def program () :
         elif x == 2 :
             test_review()
 
-#feat main menu: implemented full program loop with input validation and routing
-from QUIZ import kana_quiz
+
 if __name__ == "__main__" :
-       w = word_quiz.KotobaQuizzer()
-       w.quizzer_kana()
+       program()
+       
        
